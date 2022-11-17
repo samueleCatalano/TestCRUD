@@ -17,39 +17,38 @@ import java.util.Optional;
 public class StudentController {
 
     StudentService studentService;
-    StudentRepository repository;
 
     @PostMapping("")
     @ResponseBody
     public ResponseEntity createStudent(@RequestBody Student student) {
-        repository.save(student);
+        studentService.save(student);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("")
     public @ResponseBody List<Student> getAllStudents(Student student) {
-        return repository.findAll();
+        return studentService.findAll();
     }
 
     @GetMapping("/{id}")
     public @ResponseBody Optional<Student> getSingleStudent(@PathVariable Long id, Student student) {
-        return repository.findById(id);
+        return studentService.findById(id);
     }
 
     @PutMapping("/{id}")
     public void updateIdOfStudent(@PathVariable Long id, @RequestBody @NotNull Student student) {
         student.setId(id);
-        repository.save(student);
+        studentService.save(student);
     }
 
     @PutMapping("/{id}/isWorking")
     public void updateIsWorkingValue(@PathVariable Long id, @RequestParam("isWorking") boolean isWorking) {
-        Student student = repository.getReferenceById(id);
+        Student student = studentService.getReferenceById(id);
         studentService.setIsWorking(student,isWorking);
     }
 
     @DeleteMapping("/{id}")
     public void deleteStudentById(@PathVariable Long id) {
-        repository.deleteById(id);
+        studentService.deleteById(id);
     }
 }
